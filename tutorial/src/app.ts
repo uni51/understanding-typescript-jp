@@ -1,46 +1,26 @@
-// type AddFn = (a: number, b: number) => number;
-// 以下は関数型の別の書き方
-interface AddFn {
-  (a: number, b: number): number;
-}
-
-let add: AddFn;
-
-add = (n1: number, n2: number) => {
-  return n1 + n2;
+type Admin = {
+  name: string;
+  privileges: string[];
 };
 
-interface Named {
-  readonly name?: string;
-  outputName?: string; // 任意（オプショナル）のプロパティ
-}
+type Employee = {
+  name: string;
+  startDate: Date;
+};
 
-interface Greetable extends Named {
-  greet(phrase: string): void;
-}
+// interface ElavatedEmployee extends Employee, Admin {}
 
-class Person implements Greetable {
-  name?: string;
-  age = 30;
+// 交差型
+type ElavatedEmployee = Admin & Employee;
 
-  constructor(n?: string) {
-    if (n) {
-      this.name = n;
-    }
-  }
+const e1: ElavatedEmployee = {
+  name: "Max",
+  privileges: ["create-server"],
+  startDate: new Date(),
+};
 
-  greet(phrase: string) {
-    if (this.name) {
-      console.log(phrase + " " + this.name);
-    } else {
-      console.log("Hi");
-    }
-  }
-}
+type Combinable = string | number;
+type Numeric = number | boolean;
 
-let user1: Greetable;
-
-user1 = new Person();
-
-user1.greet("Hello I am");
-console.log(user1);
+// CombinableとNumericの共通部分になるので、結果的に、number型のみの指定となる。
+type Universal = Combinable & Numeric;
