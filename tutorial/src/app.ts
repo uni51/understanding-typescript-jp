@@ -90,6 +90,7 @@ interface Horse {
   runningSpeed: number;
 }
 
+// 判別可能なUnion型 ------------------------------
 type Animal = Bird | Horse;
 
 function moveAnimal(animal: Animal) {
@@ -106,3 +107,19 @@ function moveAnimal(animal: Animal) {
 }
 
 moveAnimal({ type: "bird", flyingSpeed: 10 });
+
+// 型キャスト ------------------------------
+
+// const userInputElement = <HTMLInputElement>(
+//   document.getElementById("user-input")!
+// );
+
+// const userInputElement = document.getElementById(
+//   "user-input"
+// )! as HTMLInputElement; // !　→ エクスクラメーションマークは絶対にnullでないことを表す
+
+const userInputElement = document.getElementById("user-input");
+
+if (userInputElement) {
+  (userInputElement as HTMLInputElement).value = "こんにちは";
+}
