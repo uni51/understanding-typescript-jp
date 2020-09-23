@@ -53,6 +53,12 @@ const fecthUserData = {
 // オプショナルチェイン ------------------------------
 console.log(fecthUserData?.job?.title);
 
+const userInput = undefined;
+
+const storedData = userInput ?? "DEFAULT";
+
+console.log(storedData);
+
 // type UnknownEmployee = Employee | Admin;
 
 // function printEmployeeInformation(emp: UnknownEmployee) {
