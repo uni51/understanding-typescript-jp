@@ -1,3 +1,5 @@
+// 83. 交差型
+
 type Admin = {
   name: string;
   privileges: string[];
@@ -10,7 +12,7 @@ type Employee = {
 
 // interface ElavatedEmployee extends Employee, Admin {}
 
-// 交差型
+// 交差型（複数の型を結合する時に使われる）
 type ElavatedEmployee = Admin & Employee;
 
 const e1: ElavatedEmployee = {
@@ -25,23 +27,26 @@ type Numeric = number | boolean;
 // CombinableとNumericの共通部分になるので、結果的に、number型のみの指定となる。
 type Universal = Combinable & Numeric;
 
-// 関数オーバーロード ------------------------------
-function add(a: number, b: number): number;
-function add(a: string, b: string): string;
-function add(a: string, b: number): string;
-function add(a: number, b: string): string;
+//-------------------------------------------
+
+// 84. 型ガード
+
+function add(a: number, b: number): number; // 関数オーバーロード
+function add(a: string, b: string): string; // 関数オーバーロード
+function add(a: string, b: number): string; // 関数オーバーロード
+function add(a: number, b: string): string; // 関数オーバーロード
 function add(a: Combinable, b: Combinable) {
-  // 型（タイプ）ガード
+  // 型ガード
   if (typeof a === "string" || typeof b === "string") {
-    return a.toString() + b?.toString();
+    return a.toString() + b.toString(); // string
   }
-  return a + b;
+  return a + b; // number
 }
 
-const result = add("Hello", " TypeScript");
+const result = add("Hello", 1);
 result.split(" ");
 
-const fecthUserData = {
+const fetchedUserData = {
   id: "u1",
   name: "user1",
   job: {
@@ -50,8 +55,7 @@ const fecthUserData = {
   },
 };
 
-// オプショナルチェイン ------------------------------
-console.log(fecthUserData?.job?.title);
+console.log(fetchedUserData?.job?.title);
 
 const userInput = undefined;
 
@@ -63,16 +67,18 @@ console.log(storedData);
 
 // function printEmployeeInformation(emp: UnknownEmployee) {
 //   console.log(emp.name);
-//   // 型（タイプ）ガード
+//   // プロパティの存在をチェック
 //   if ("privileges" in emp) {
-//     console.log("Privileges: " + emp.privileges);
+//     console.log("Privileges:" + emp.privileges);
 //   }
 //   if ("startDate" in emp) {
-//     console.log("Start Date: " + emp.startDate);
+//     console.log("StartDate:" + emp.startDate);
 //   }
 // }
 
-// printEmployeeInformation({ name: "Manu", startDate: new Date() });
+// // printEmployeeInformation(e1);
+
+// // printEmployeeInformation({ name: "Manu", startDate: new Date() });
 
 // class Car {
 //   drive() {
@@ -97,7 +103,7 @@ console.log(storedData);
 
 // function useVehicle(vehicle: Vehicle) {
 //   vehicle.drive();
-//   // 型（タイプ）ガード
+//   // if ("loadCargo" in vehicle) {
 //   if (vehicle instanceof Truck) {
 //     vehicle.loadCargo(1000);
 //   }
@@ -105,6 +111,8 @@ console.log(storedData);
 
 // useVehicle(v1);
 // useVehicle(v2);
+
+// // 判別可能なUnion型 ------------------------------
 
 // interface Bird {
 //   type: "bird";
@@ -116,7 +124,6 @@ console.log(storedData);
 //   runningSpeed: number;
 // }
 
-// // 判別可能なUnion型 ------------------------------
 // type Animal = Bird | Horse;
 
 // function moveAnimal(animal: Animal) {
@@ -134,30 +141,32 @@ console.log(storedData);
 
 // moveAnimal({ type: "bird", flyingSpeed: 10 });
 
-// 型キャスト ------------------------------
+// // // 型キャスト ------------------------------
 
-// const userInputElement = <HTMLInputElement>(
-//   document.getElementById("user-input")!
-// );
+// // const userInputElement = <HTMLInputElement>(
+// //   document.getElementById("user-input")!
+// // );
 
-// const userInputElement = document.getElementById(
-//   "user-input"
-// )! as HTMLInputElement; // !　→ エクスクラメーションマークは絶対にnullでないことを表す
+// // const userInputElement = document.getElementById(
+// //   "user-input"
+// // )! as HTMLInputElement; // !　→ エクスクラメーションマークは絶対にnullでないことを表す
 
-const userInputElement = document.getElementById("user-input");
+// // userInputElement.value = "こんにちは";
 
-if (userInputElement) {
-  (userInputElement as HTMLInputElement).value = "こんにちは";
-}
+// const userInputElement = document.getElementById("user-input");
 
-// インデックス型 ------------------------------
+// if (userInputElement) {
+//   (userInputElement as HTMLInputElement).value = "こんにちは";
+// }
 
-interface ErrorContainer {
-  // id: string;
-  [prop: string]: string;
-}
+// // インデックス型 ------------------------------
 
-const errorBag: ErrorContainer = {
-  email: "正しいメールアドレスではありません",
-  username: "ユーザー名に記号を含めることはできません",
-};
+// interface ErrorContainer {
+//   // id: string;
+//   [prop: string]: string;
+// }
+
+// const errorBag: ErrorContainer = {
+//   email: "正しいメールアドレスではありません",
+//   username: "ユーザー名に記号を含めることはできません",
+// };
